@@ -2,6 +2,8 @@ import numpy as np
 from numpy import genfromtxt
 import matplotlib.pyplot as plt
 
+
+
 """IMPORTATION"""
 east = genfromtxt('EastFeed.csv',delimiter= ',')
 west = genfromtxt('WestFeed.csv',delimiter=',')
@@ -9,7 +11,6 @@ west = genfromtxt('WestFeed.csv',delimiter=',')
 """DATA EXTRACTION"""
 west_pwr = west[:,6]
 east_pwr = east[:,6]
-
 
 """DATA CLEANING"""
 west_pwr = np.delete(west_pwr,0)
@@ -32,11 +33,9 @@ west_out = west_out-np.min(west_out)
 After printing out the west_out variable two 
 outages were found. One was 290 intervals, one was 1 interval
 """
-west_outages = np.array([290,1]) #Outage Length in intervals
+west_outages = np.array([1]) #Outage Length in intervals
 west_outages = west_outages*15   #Outage length in minutes
 west_outages = west_outages/60   #Outage Length in hours
-
-
 
 east_pwrout = np.zeros(length)
 np.copyto(east_pwrout,east_pwr)
@@ -46,7 +45,6 @@ east_pwrout = 1+east_pwrout
 east_out = np.nonzero(east_pwrout)
 east_out = east_out[0]
 east_out = east_out-np.min(east_out)
-
 
 """
 After printing the east_out variable one 
@@ -65,30 +63,32 @@ mem = mem/(1*(10**9))
 
 print("Memory Usage of graphed arrays",mem)
 
+print("")
+print("The first outage on the West feed is maintence")
 
 """PLOTTING"""
 plt.subplots_adjust(hspace=0.4,wspace=0.5)
 
 plt.subplot(2,3,1)
-plt.plot(time,west_pwr)
+plt.plot(time,west_pwr,'g')
 plt.grid()
 plt.title("West Feed")
 plt.xlabel("Time [hrs]")
 
 plt.subplot(2,3,4)
-plt.plot(time,east_pwr)
+plt.plot(time,east_pwr,'c')
 plt.grid()
 plt.title("East Feed")
 plt.xlabel("Time [hrs]")
 
 plt.subplot(2,3,2)
-plt.plot(time,west_pwrout)
+plt.plot(time,west_pwrout,'g')
 plt.grid()
 plt.title("West Feed Outage")
 plt.xlabel("Time [hrs]")
 
 plt.subplot(2,3,5)
-plt.plot(time,east_pwrout)
+plt.plot(time,east_pwrout,'c')
 plt.grid()
 plt.title("East Feed Outage")
 plt.xlabel("Time [hrs]")
@@ -96,7 +96,7 @@ plt.xlabel("Time [hrs]")
 #Bar Plots
 
 plt.subplot(2,3,3)
-plt.bar(np.arange(len(west_outages)),west_outages)
+plt.bar(1,west_outages)
 plt.ylabel("Outage Length [hrs]")
 plt.title("West Feed Outages ")
 
